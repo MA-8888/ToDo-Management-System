@@ -3,11 +3,11 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>UserPage</title>
+	<title>AdminPage</title>
 </head>
 
 <body>
-	<h1>User Page</h1>
+	<h1>Admin Page</h1>
 	<table border="1">
 		<tr>
 			<th>項目</th>
@@ -15,15 +15,15 @@
 		</tr>
 		<tr>
 			<td>UserName</td>
-			<td><span sec:authentication="principal.username"></span></td>
+			<td><span sec:authentication="principal.username"></span></td> <!-- ユーザ名を表示 -->
 		</tr>
 		<tr>
 			<td>Name</td>
-			<td><span sec:authentication="principal.name"></span></td>
+			<td><span sec:authentication="principal.name"></span></td> <!-- 名前を表示 -->
 		</tr>
 		<tr>
 			<td>Role</td>
-			<td><span sec:authentication="principal.authorities"></span></td>
+			<td><span sec:authentication="principal.authorities"></span></td> <!-- Roleを表示 -->
 		</tr>
 	</table>
 

@@ -1,4 +1,4 @@
-package com.dmm.task.data;
+package com.dmm.task;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 

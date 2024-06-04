@@ -5,24 +5,17 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.dmm.task.data.AccountUserDetailsService;
+import com.dmm.task.service.AccountUserDetailsService;
 
-@Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@Configuration // 設定を行うクラスであることを指定
+@EnableWebSecurity // Spring Securityを利用することを指定
+@EnableGlobalMethodSecurity(prePostEnabled = true) // 追記 メソッド認可処理を有効化
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	@Override
-	public void configure(WebSecurity web) throws Exception {
-		// 画像、JavaScript、cssは認可の対象外とする
-		web.debug(false).ignoring().antMatchers("/images/**", "/js/**", "/css/**");
-	}
-
 	@Autowired
 	private AccountUserDetailsService userDetailsService;
 

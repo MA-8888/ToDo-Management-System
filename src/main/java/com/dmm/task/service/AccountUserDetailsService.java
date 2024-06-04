@@ -1,4 +1,4 @@
-package com.dmm.task.data;
+package com.dmm.task.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
