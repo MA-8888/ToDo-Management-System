@@ -16,8 +16,4 @@ public class Task {
     private String title;
     private LocalDate date;
     private boolean done;
-    
-    public String getDate() {
-    	return "getDate";
-    }
 }
