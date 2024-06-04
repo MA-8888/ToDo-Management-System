@@ -9,12 +9,15 @@ import javax.persistence.Id;
 
 @Entity
 public class Task {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String title;
-	private boolean done;
-	private LocalDate date;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	// Getters and setters
+    private String title;
+    private LocalDate date;
+    private boolean done;
+    
+    public String getDate() {
+    	return "getDate";
+    }
 }
