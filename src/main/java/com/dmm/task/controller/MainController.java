@@ -11,13 +11,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.dmm.task.service.TaskService;
+import com.dmm.task.service.PostService;
 
 @Controller
-public class TaskController {
+public class MainController {
 
 	@Autowired
-	private TaskService Service;
+	private PostService Service;
 
 	@GetMapping("/main")
 	public String getCalendar(Model model, @RequestParam(required = false) String date) {
@@ -50,7 +50,7 @@ public class TaskController {
 
 		// カレンダーとタスクデータをモデルに追加
 		model.addAttribute("matrix", month);
-		model.addAttribute("month", currentDate.getYear() + "-" + currentDate.getMonthValue());
+		model.addAttribute("month", currentDate.getYear() + " - " + currentDate.getMonthValue());
 		model.addAttribute("prev", currentDate.minusMonths(1));
 		model.addAttribute("next", currentDate.plusMonths(1));
 		model.addAttribute("tasks", Service.getTasksForCalendar(currentDate));
