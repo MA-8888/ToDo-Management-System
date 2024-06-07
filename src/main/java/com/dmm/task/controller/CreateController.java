@@ -1,20 +1,22 @@
 package com.dmm.task.controller;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dmm.task.entity.Create;
 import com.dmm.task.entity.Tasks;
-import com.dmm.task.service.TaskService;
+import com.dmm.task.repository.TasksRepository;
 
 @Controller
 public class CreateController {
 	@Autowired
-	private TaskService service;
+	private TasksRepository repo;
 
 	@GetMapping("/main/create/{date}")
 	public String showCreateForm(Model model) {
@@ -23,12 +25,13 @@ public class CreateController {
 	}
 
 	@PostMapping("/main/create/")
-	public String create(@ModelAttribute Create create) {
-		Tasks task = new Tasks();
-		task.setTitle(create.getTitle());
-		task.setDate(create.getDate());
-		task.setText(create.getText());
-		service.save(task);
+	public String create(@RequestParam("title") String title, @RequestParam("date")CharSequence dateString,
+			@RequestParam("text") String text) {
+		LocalDate date = LocalDate.parse(dateString);
+
+		Tasks task = new Tasks(title, date, text);
+		repo.save(task);
+
 		return "redirect:/main";
 	}
 
