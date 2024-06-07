@@ -15,7 +15,7 @@ import com.dmm.task.repository.TasksRepository;
 public class TaskService {
 
 	@Autowired
-	private TasksRepository taskRepository;
+	private TasksRepository repo;
 
 	public Map<LocalDate, List<Tasks>> getTasksForCalendar(LocalDate date) {
 		// 月初と月末を計算
@@ -23,9 +23,13 @@ public class TaskService {
 		LocalDate end = date.withDayOfMonth(date.lengthOfMonth());
 
 		// 月のすべてのタスクを取得
-		List<Tasks> tasks = taskRepository.findByDateBetween(start, end);
+		List<Tasks> tasks = repo.findByDateBetween(start, end);
 
 		// タスクを日付ごとにマップに変換
 		return tasks.stream().collect(Collectors.groupingBy(Tasks::getDate));
+	}
+	
+	public void save(Tasks task) {
+		repo.save(task);
 	}
 }

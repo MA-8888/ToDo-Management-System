@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.dmm.task.entity.Create;
 import com.dmm.task.entity.Tasks;
-import com.dmm.task.service.CreateService;
+import com.dmm.task.service.TaskService;
 
 @Controller
 public class CreateController {
 	@Autowired
-	private CreateService service;
+	private TaskService service;
 
 	@GetMapping("/main/create/{date}")
 	public String showCreateForm(Model model) {
@@ -25,7 +25,10 @@ public class CreateController {
 	@PostMapping("/main/create/")
 	public String create(@ModelAttribute Create create) {
 		Tasks task = new Tasks();
-		service.save(create);
+		task.setTitle(create.getTitle());
+		task.setDate(create.getDate());
+		task.setText(create.getText());
+		service.save(task);
 		return "redirect:/main";
 	}
 

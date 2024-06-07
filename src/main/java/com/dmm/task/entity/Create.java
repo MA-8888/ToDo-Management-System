@@ -22,8 +22,8 @@ public class Create {
 	private String title;
 
 	@Column(length = 1000)
-	private String description;
-	
+	private String text;
+
 	@DateTimeFormat(pattern = "yyyy-mm-dd")
 	private LocalDate date;
 
@@ -50,14 +50,6 @@ public class Create {
 		this.title = title;
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public LocalDate getDate() {
 		return date;
 	}
@@ -80,6 +72,13 @@ public class Create {
 
 	public void setUser(Users user) {
 		this.user = user;
+	}
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public String getText() {
+		return text;
 	}
 
 }
