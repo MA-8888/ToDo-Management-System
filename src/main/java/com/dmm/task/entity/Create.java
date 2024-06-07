@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 public class Create {
 
@@ -21,7 +23,8 @@ public class Create {
 
 	@Column(length = 1000)
 	private String description;
-
+	
+	@DateTimeFormat(pattern = "yyyy-mm-dd")
 	private LocalDate date;
 
 	private boolean done;
