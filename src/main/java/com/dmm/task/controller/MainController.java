@@ -11,13 +11,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.dmm.task.service.PostService;
+import com.dmm.task.service.TaskService;
 
 @Controller
 public class MainController {
 
 	@Autowired
-	private PostService Service;
+	private TaskService Service;
 
 	@GetMapping("/main")
 	public String getCalendar(Model model, @RequestParam(required = false) String date) {

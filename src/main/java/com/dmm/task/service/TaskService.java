@@ -8,24 +8,24 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dmm.task.entity.Posts;
-import com.dmm.task.repository.PostsRepository;
+import com.dmm.task.entity.Tasks;
+import com.dmm.task.repository.TasksRepository;
 
 @Service
-public class PostService {
+public class TaskService {
 
 	@Autowired
-	private PostsRepository taskRepository;
+	private TasksRepository taskRepository;
 
-	public Map<LocalDate, List<Posts>> getTasksForCalendar(LocalDate date) {
+	public Map<LocalDate, List<Tasks>> getTasksForCalendar(LocalDate date) {
 		// 月初と月末を計算
 		LocalDate start = date.withDayOfMonth(1);
 		LocalDate end = date.withDayOfMonth(date.lengthOfMonth());
 
 		// 月のすべてのタスクを取得
-		List<Posts> tasks = taskRepository.findByDateBetween(start, end);
+		List<Tasks> tasks = taskRepository.findByDateBetween(start, end);
 
 		// タスクを日付ごとにマップに変換
-		return tasks.stream().collect(Collectors.groupingBy(Posts::getDate));
+		return tasks.stream().collect(Collectors.groupingBy(Tasks::getDate));
 	}
 }

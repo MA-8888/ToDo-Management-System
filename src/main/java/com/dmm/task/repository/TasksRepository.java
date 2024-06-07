@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.dmm.task.entity.Posts;
+import com.dmm.task.entity.Tasks;
 
 @Repository
-public interface PostsRepository extends JpaRepository<Posts, Long> {
-    List<Posts> findByDateBetween(LocalDate start, LocalDate end);
+public interface TasksRepository extends JpaRepository<Tasks, Long> {
+    List<Tasks> findByDateBetween(LocalDate start, LocalDate end);
 }

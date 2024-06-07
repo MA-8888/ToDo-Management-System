@@ -7,4 +7,5 @@ import com.dmm.task.entity.Create;
 
 @Repository
 public interface CreateRepository extends JpaRepository<Create, Long> {
+//	List<Create> findByDateBetween(LocalDate start, LocalDate end);
 }

@@ -15,7 +15,7 @@ public class CreateController {
     @Autowired
     private CreateService service;
 
-    @GetMapping("/create")
+    @GetMapping("/create/@{date}")
     public String showCreateForm(Model model) {
         model.addAttribute("create", new Create());
         return "create";
