@@ -1,14 +1,13 @@
 package com.dmm.task.controller;
 
-import java.time.LocalDate;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import com.dmm.task.TaskForm;
 import com.dmm.task.entity.Create;
 import com.dmm.task.entity.Tasks;
 import com.dmm.task.repository.TasksRepository;
@@ -24,12 +23,16 @@ public class CreateController {
 		return "create";
 	}
 
-	@PostMapping("/main/create/")
-	public String create(@RequestParam("title") String title, @RequestParam("date")CharSequence dateString,
-			@RequestParam("text") String text) {
-		LocalDate date = LocalDate.parse(dateString);
-
-		Tasks task = new Tasks(title, date, text);
+	@PostMapping("/main/create")
+	public String create(@Validated TaskForm form, Model model) {
+//dateをStringからLocalDateに変えて保存する
+//カレンダーで月の終わりの日で週の表示を終わらせる
+//editの方もやる
+		Tasks task = new Tasks();
+		task.setTitle(form.getTitle());
+		task.setText(form.getText());
+		task.setDate(form.getDate());
+		
 		repo.save(task);
 
 		return "redirect:/main";

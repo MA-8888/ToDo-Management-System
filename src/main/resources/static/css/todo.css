@@ -1,4 +1,3 @@
-
 @charset "UTF-8";
 
 .sd {
@@ -183,7 +182,7 @@ a.prevnext:-webkit-any-link {
 .calendar_box {
  background: #FFFFFF;
  border: 1px solid #ffb6b9;
- height: 100px;
+ height: 80px;
  margin: 0px 0px 0px 0px;
  width: 120px;
 }

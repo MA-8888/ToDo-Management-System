@@ -19,12 +19,6 @@ public class Tasks {
 	@Column(length = 1000)
 	private String text;
 	
-	public Tasks(String title, LocalDate date, String text) {
-		this.title = title;
-		this.date = date;
-		this.text = text;
-	}
-	
 
 	public Long getId() {
 		return id;
