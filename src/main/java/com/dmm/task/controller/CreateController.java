@@ -25,9 +25,6 @@ public class CreateController {
 
 	@PostMapping("/main/create")
 	public String create(@Validated TaskForm form, Model model) {
-//dateをStringからLocalDateに変えて保存する
-//カレンダーで月の終わりの日で週の表示を終わらせる
-//editの方もやる
 		Tasks task = new Tasks();
 		task.setTitle(form.getTitle());
 		task.setText(form.getText());
@@ -39,3 +36,6 @@ public class CreateController {
 	}
 
 }
+//dateをStringからLocalDateに変えて保存する
+//カレンダーで月の終わりの日で週の表示を終わらせる
+//editの方もやる
