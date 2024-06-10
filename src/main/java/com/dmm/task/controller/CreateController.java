@@ -1,5 +1,7 @@
 package com.dmm.task.controller;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +30,7 @@ public class CreateController {
 		Tasks task = new Tasks();
 		task.setTitle(form.getTitle());
 		task.setText(form.getText());
-		task.setDate(form.getDate());
+		task.setDate(LocalDate.parse(form.getDate()));
 		
 		repo.save(task);
 
