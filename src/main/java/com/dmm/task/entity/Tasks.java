@@ -18,7 +18,7 @@ public class Tasks {
 	private LocalDate date;
 	@Column(length = 1000)
 	private String text;
-	
+	private boolean done;
 
 	public Long getId() {
 		return id;
@@ -50,5 +50,13 @@ public class Tasks {
 
 	public String getText() {
 		return text;
+	}
+
+	public boolean isDone() {
+		return done;
+	}
+
+	public void setDone(boolean done) {
+		this.done = done;
 	}
 }
