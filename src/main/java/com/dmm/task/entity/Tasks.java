@@ -19,6 +19,8 @@ public class Tasks {
 	@Column(length = 1000)
 	private String text;
 	private boolean done;
+	@Column(nullable = false)
+	private String name;
 
 	public Long getId() {
 		return id;
@@ -58,5 +60,13 @@ public class Tasks {
 
 	public void setDone(boolean done) {
 		this.done = done;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
 	}
 }
