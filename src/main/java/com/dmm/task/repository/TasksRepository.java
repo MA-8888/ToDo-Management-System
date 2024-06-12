@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.dmm.task.entity.Tasks;
 
 @Repository
-public interface TasksRepository extends JpaRepository<Tasks, Long> {
+public interface TasksRepository extends JpaRepository<Tasks, Integer> {
     List<Tasks> findByDateBetween(LocalDate start, LocalDate end);
     
     @Query("select a from Tasks a where a.date between :from and :to and name = :name")

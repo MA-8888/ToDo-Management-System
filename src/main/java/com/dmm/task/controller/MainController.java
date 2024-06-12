@@ -18,7 +18,7 @@ import com.dmm.task.service.TaskService;
 public class MainController {
 
 	@Autowired
-	private TaskService Service;
+	private TaskService service;
 
 	@GetMapping("/main")
 	public String getCalendar(Model model, @RequestParam(required = false) String date) {
@@ -58,7 +58,7 @@ public class MainController {
 		model.addAttribute("month", currentDate.getYear() + " - " + currentDate.getMonthValue());
 		model.addAttribute("prev", currentDate.minusMonths(1));
 		model.addAttribute("next", currentDate.plusMonths(1));
-		model.addAttribute("tasks", Service.getTasksForCalendar(currentDate));
+		model.addAttribute("tasks", service.getTasksForCalendar(currentDate));
 
 		return "main";
 	}

@@ -29,7 +29,18 @@ public class TaskService {
 		return tasks.stream().collect(Collectors.groupingBy(Tasks::getDate));
 	}
 	
-	public void save(Tasks task) {
-		repo.save(task);
-	}
+	   public Tasks createTask(String title, String name, String text, LocalDate date, boolean done) {
+	        Tasks task = new Tasks();
+	        task.setTitle(title);
+	        task.setName(name);
+	        task.setText(text);
+	        task.setDate(date);
+	        task.setDone(done);
+	        return repo.save(task);
+	    }
+
+//	public void save(Tasks task) {
+//		repo.save(task);
+//	}
+	
 }
