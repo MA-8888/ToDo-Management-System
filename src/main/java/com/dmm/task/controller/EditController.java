@@ -28,9 +28,9 @@ public class EditController {
 		return "edit";
 	}
 
-	@PostMapping("/main/edit")
-	public String updateTask(@Validated TaskForm taskForm) {
-		Tasks task = new Tasks();
+	@PostMapping("/main/edit/{id}")
+	public String updateTask(@PathVariable("id") Integer id, @Validated TaskForm taskForm) {
+		Tasks task = repo.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid task Id:" + id));
 		task.setTitle(taskForm.getTitle());
 		task.setText(taskForm.getText());
 
@@ -43,7 +43,7 @@ public class EditController {
 		return "redirect:/main";
 	}
 
-	@PostMapping("/main/delete")
+	@PostMapping("/main/delete/{id}")
 	public String deleteTask(@PathVariable("id") Integer id) {
 		Tasks task = repo.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid task Id:" + id));
 		repo.delete(task);
