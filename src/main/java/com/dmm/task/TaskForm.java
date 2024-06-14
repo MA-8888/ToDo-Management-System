@@ -13,4 +13,5 @@ public class TaskForm {
 	private String text;
 	
 	private String date;
+	private boolean done;
 }

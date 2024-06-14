@@ -159,8 +159,10 @@ button {
 
 .todo {
  background: #fae3d9;
- height: 100vh;
+ /*height: 100vh;*/
  justify-content: center;
+ padding-top: 100px;
+ padding-bottom: 100px;
 }
 
 .todo_header {

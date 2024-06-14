@@ -26,7 +26,7 @@ public class CreateController {
 	@Autowired
 	private TasksRepository repo;
 
-	@GetMapping("/main/create")
+	@GetMapping("/main/create/{date}")
 	public String showCreateForm(Model model) {
 		model.addAttribute("create", new Create());
 		return "create";
