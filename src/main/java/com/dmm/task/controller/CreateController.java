@@ -27,7 +27,12 @@ public class CreateController {
 	private TasksRepository repo;
 
 	@GetMapping("/main/create/{date}")
-	public String showCreateForm(Model model) {
+	public String showCreateForm(Model model, @Validated TaskForm taskForm) {
+		Tasks task = new Tasks();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate date1 = LocalDate.parse(taskForm.getDate(), formatter);
+		task.setDate(date1);
+		model.addAttribute("date", date1);
 		model.addAttribute("create", new Create());
 		return "create";
 	}
@@ -46,20 +51,20 @@ public class CreateController {
 		task.setName(user.getName());
 		task.setTitle(taskForm.getTitle());
 		task.setText(taskForm.getText());
-		
+
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		try {
-		    LocalDate date = LocalDate.parse(taskForm.getDate(), formatter);
-		    task.setDate(date);
-		    System.out.println("Parsed date: " + date);
+			LocalDate date = LocalDate.parse(taskForm.getDate(), formatter);
+			task.setDate(date);
+			System.out.println("Parsed date: " + date);
 		} catch (DateTimeParseException e) {
-		    System.out.println("Failed to parse date: " + taskForm.getDate());
-		    e.printStackTrace();
-		    bindingResult.rejectValue("date", "Invalid.date", "日付のフォーマットが不正です。");
+			System.out.println("Failed to parse date: " + taskForm.getDate());
+			e.printStackTrace();
+			bindingResult.rejectValue("date", "Invalid.date", "日付のフォーマットが不正です。");
 		}
-		
+
 		repo.save(task);
-		
+
 		return "redirect:/main";
 	}
 
