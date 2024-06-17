@@ -38,7 +38,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.exceptionHandling() // 追記
 				.accessDeniedPage("/accessDeniedPage") // 追記 アクセス拒否された時に遷移するパス
 				.and() // 追記
-				.authorizeRequests().antMatchers("/loginForm").permitAll().anyRequest().authenticated(); // loginForm以外は、認証を求める
+				.authorizeRequests()
+				.antMatchers("/admin/**").hasRole("ADMIN")
+				.antMatchers("/user/**").hasRole("USER")
+				.antMatchers("/loginForm").permitAll().anyRequest().authenticated(); // loginForm以外は、認証を求める
 
 		// ログイン設定
 		http.formLogin() // フォーム認証の有効化
@@ -59,5 +62,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// 画像、JavaScript、cssは認可の対象外とする
 		web.debug(false).ignoring().antMatchers("/images/**", "/js/**", "/css/**");
 	}
+	
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+            .inMemoryAuthentication()
+                .withUser("user").password("{noop}user").roles("USER")
+                .and()
+                .withUser("admin").password("{noop}admin").roles("ADMIN");
+    }
 
 }
