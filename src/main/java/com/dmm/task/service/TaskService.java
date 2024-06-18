@@ -41,13 +41,14 @@ public class TaskService {
 		}
 
 		// 月のすべてのタスクを取得
-//		List<Tasks> tasks = repo.findByDateBetween(start, end);
+		//		List<Tasks> tasks = repo.findByDateBetween(start, end);
 
 		// タスクを日付ごとにマップに変換
-		return tasks.stream().collect(Collectors.groupingBy(Tasks::getDate));
+		return tasks.stream()
+				.collect(Collectors.groupingBy(task -> task.getDate().toLocalDate()));
 	}
 
-	public Tasks createTask(String title, String name, String text, LocalDate date, boolean done) {
+	public Tasks createTask(String title, String name, String text, LocalDateTime date, boolean done) {
 		Tasks task = new Tasks();
 		task.setTitle(title);
 		task.setName(name);

@@ -1,6 +1,6 @@
 package com.dmm.task.controller;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class EditController {
 		task.setText(taskForm.getText());
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		LocalDate date = LocalDate.parse(taskForm.getDate(), formatter);
+		LocalDateTime date = LocalDateTime.parse(taskForm.getDate(), formatter);
 		task.setDate(date);
 		task.setDone(taskForm.isDone());
 		repo.save(task);
