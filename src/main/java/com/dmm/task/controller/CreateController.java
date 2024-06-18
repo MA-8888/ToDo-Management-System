@@ -30,7 +30,7 @@ public class CreateController {
 	public String showCreateForm(@PathVariable String date, Model model, @Validated TaskForm taskForm) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate parsedDate = LocalDate.parse(date, formatter);
-		LocalDateTime dateTime = parsedDate.atStartOfDay();
+		LocalDateTime dateTime = parsedDate.atTime(0, 0);
 		model.addAttribute("date", dateTime);
 		model.addAttribute("taskForm", new TaskForm());
 		return "create";
@@ -45,14 +45,21 @@ public class CreateController {
 			model.addAttribute("taskForm", taskForm);
 			return "create";
 		} else {
+			if (user == null) {
+				throw new IllegalStateException("認証情報が存在しません。");
+			}
+
 			Tasks task = new Tasks();
 			task.setTitle(taskForm.getTitle());
 			task.setText(taskForm.getText());
 
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			LocalDateTime date = LocalDateTime.parse(taskForm.getDate(), formatter);
-			task.setDate(date);
-			System.out.println("Parsed date: " + date);
+			// Userから名前を取得して設定
+			task.setName(user.getUsername());
+
+			LocalDate date = taskForm.getDate();
+			LocalDateTime dateTime = date.atTime(0, 0);
+			task.setDate(dateTime);
+			task.setDone(taskForm.isDone());
 
 			repo.save(task);
 
@@ -60,7 +67,28 @@ public class CreateController {
 		}
 	}
 
+	//	@PostMapping("/main/create")
+	//	public String post(@Validated TaskForm taskForm, BindingResult bindingResult,
+	//			@AuthenticationPrincipal AccountUserDetails user, Model model) {
+	//		if (bindingResult.hasErrors()) {
+	//			List<Tasks> list = repo.findAll(Sort.by(Sort.Direction.DESC, "id"));
+	//			model.addAttribute("tasks", list);
+	//			model.addAttribute("taskForm", taskForm);
+	//			return "create";
+	//		} else {
+	//			Tasks task = new Tasks();
+	//			task.setTitle(taskForm.getTitle());
+	//			task.setText(taskForm.getText());
+	//			task.setName(user.getUsername());
+	//
+	//			LocalDate date = taskForm.getDate();
+	//			LocalDateTime dateTime = date.atTime(0, 0);
+	//			task.setDate(dateTime);
+	//			task.setDone(taskForm.isDone());
+	//
+	//			repo.save(task);
+	//
+	//			return "redirect:/main";
+	//		}
+	//	}
 }
-//dateをStringからLocalDateに変えて保存する
-//カレンダーで月の終わりの日で週の表示を終わらせる
-//editの方もやる

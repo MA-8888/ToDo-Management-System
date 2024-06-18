@@ -1,7 +1,7 @@
 package com.dmm.task.controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,9 +22,10 @@ public class EditController {
 	private TasksRepository repo;
 
 	@GetMapping("/main/edit/{id}")
-	public String showEditForm(@PathVariable("id") Integer id, Model model) {
+	public String showEditForm(@PathVariable("id") Integer id, Model model, TaskForm taskForm) {
 		Tasks task = repo.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid task Id:" + id));
 		model.addAttribute("task", task);
+		model.addAttribute("taskForm", new TaskForm());
 		return "edit";
 	}
 
@@ -34,9 +35,10 @@ public class EditController {
 		task.setTitle(taskForm.getTitle());
 		task.setText(taskForm.getText());
 
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		LocalDateTime date = LocalDateTime.parse(taskForm.getDate(), formatter);
-		task.setDate(date);
+		
+		LocalDate date =taskForm.getDate();
+		LocalDateTime dateTime = date.atTime(0,0);
+		task.setDate(dateTime);
 		task.setDone(taskForm.isDone());
 		repo.save(task);
 
