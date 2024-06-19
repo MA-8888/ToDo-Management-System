@@ -23,7 +23,7 @@ public class MainController {
 	private TaskService service;
 
 	@GetMapping("/main")
-	public String getCalendar(Model model, @AuthenticationPrincipal AccountUserDetails userDetails,
+	public String getCalendar(Model model, @AuthenticationPrincipal AccountUserDetails user,
 			@RequestParam(required = false) String date) {
 		// 指定された日付または現在の日付を基準日とする
 		LocalDate currentDate = date != null ? LocalDate.parse(date) : LocalDate.now();
@@ -61,7 +61,7 @@ public class MainController {
 		model.addAttribute("month", currentDate.getYear() + " - " + currentDate.getMonthValue());
 		model.addAttribute("prev", currentDate.minusMonths(1));
 		model.addAttribute("next", currentDate.plusMonths(1));
-		model.addAttribute("tasks", service.getTasksForCalendar(currentDate));
+		model.addAttribute("tasks", service.getTasksForCalendar(currentDate, user));
 		return "main";
 	}
 }
