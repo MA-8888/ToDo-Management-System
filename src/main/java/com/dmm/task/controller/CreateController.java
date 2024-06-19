@@ -10,7 +10,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,58 +36,23 @@ public class CreateController {
 	}
 
 	@PostMapping("/main/create")
-	public String post(@Validated TaskForm taskForm, BindingResult bindingResult,
+	public String post(@Validated TaskForm taskForm, 
 			@AuthenticationPrincipal AccountUserDetails user, Model model) {
-		if (bindingResult.hasErrors()) {
-			List<Tasks> list = repo.findAll(Sort.by(Sort.Direction.DESC, "id"));
-			model.addAttribute("tasks", list);
-			model.addAttribute("taskForm", taskForm);
-			return "create";
-		} else {
-			if (user == null) {
-				throw new IllegalStateException("認証情報が存在しません。");
-			}
+		List<Tasks> list = repo.findAll(Sort.by(Sort.Direction.DESC, "id"));
+		model.addAttribute("tasks", list);
+		model.addAttribute("taskForm", taskForm);
 
-			Tasks task = new Tasks();
-			task.setTitle(taskForm.getTitle());
-			task.setText(taskForm.getText());
+		Tasks task = new Tasks();
+		task.setTitle(taskForm.getTitle());
+		task.setText(taskForm.getText());
+		task.setName(user.getName());
 
-			// Userから名前を取得して設定
-			task.setName(user.getUsername());
+		LocalDate date = taskForm.getDate();
+		LocalDateTime dateTime = date.atTime(0, 0);
+		task.setDate(dateTime);
 
-			LocalDate date = taskForm.getDate();
-			LocalDateTime dateTime = date.atTime(0, 0);
-			task.setDate(dateTime);
-			task.setDone(taskForm.isDone());
+		repo.save(task);
 
-			repo.save(task);
-
-			return "redirect:/main";
-		}
+		return "redirect:/main";
 	}
-
-	//	@PostMapping("/main/create")
-	//	public String post(@Validated TaskForm taskForm, BindingResult bindingResult,
-	//			@AuthenticationPrincipal AccountUserDetails user, Model model) {
-	//		if (bindingResult.hasErrors()) {
-	//			List<Tasks> list = repo.findAll(Sort.by(Sort.Direction.DESC, "id"));
-	//			model.addAttribute("tasks", list);
-	//			model.addAttribute("taskForm", taskForm);
-	//			return "create";
-	//		} else {
-	//			Tasks task = new Tasks();
-	//			task.setTitle(taskForm.getTitle());
-	//			task.setText(taskForm.getText());
-	//			task.setName(user.getUsername());
-	//
-	//			LocalDate date = taskForm.getDate();
-	//			LocalDateTime dateTime = date.atTime(0, 0);
-	//			task.setDate(dateTime);
-	//			task.setDone(taskForm.isDone());
-	//
-	//			repo.save(task);
-	//
-	//			return "redirect:/main";
-	//		}
-	//	}
 }

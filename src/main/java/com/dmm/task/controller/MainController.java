@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.dmm.task.service.AccountUserDetails;
 import com.dmm.task.service.TaskService;
 
 @Controller
@@ -21,7 +23,8 @@ public class MainController {
 	private TaskService service;
 
 	@GetMapping("/main")
-	public String getCalendar(Model model, @RequestParam(required = false) String date) {
+	public String getCalendar(Model model, @AuthenticationPrincipal AccountUserDetails userDetails,
+			@RequestParam(required = false) String date) {
 		// 指定された日付または現在の日付を基準日とする
 		LocalDate currentDate = date != null ? LocalDate.parse(date) : LocalDate.now();
 		YearMonth currentYearMonth = YearMonth.from(currentDate);
@@ -59,7 +62,18 @@ public class MainController {
 		model.addAttribute("prev", currentDate.minusMonths(1));
 		model.addAttribute("next", currentDate.plusMonths(1));
 		model.addAttribute("tasks", service.getTasksForCalendar(currentDate));
-
 		return "main";
 	}
 }
+
+//// ログインユーザの権限情報を取得
+//Users currentUser = userDetails.getUser();
+//String roleName = "ROLE_" + currentUser.getRoleName();
+//
+//if (roleName.equals("ROLE_user")) {
+//	// userの場合の処理
+//	model.addAttribute("tasks", service.getLimitedTasks(currentUser.getUserName()));
+//} else {
+//	// adminの場合の処理
+//	model.addAttribute("tasks", service.getTasksForCalendar(currentDate));
+//}
