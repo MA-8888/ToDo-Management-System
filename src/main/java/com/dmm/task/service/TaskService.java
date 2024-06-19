@@ -20,7 +20,7 @@ public class TaskService {
 	@Autowired
 	private TasksRepository repo;
 
-	public Map<LocalDate, List<Tasks>> getTasksForCalendar(LocalDate date) {
+	public Map<LocalDate, List<Tasks>> getTasksForCalendar(LocalDate date, AccountUserDetails userDetails) {
 		// 月初と月末を計算
 		YearMonth currentYearMonth = YearMonth.from(date);
 		LocalDate startOfMonth = currentYearMonth.atDay(1);
@@ -30,11 +30,11 @@ public class TaskService {
 		LocalDateTime endDateTime = endOfMonth.plusDays(1).atStartOfDay();
 
 		List<Tasks> tasks;
-		//		if ("user".equals(userDetails.getUser().getRoleName())) {
-		tasks = repo.findByDateBetween(startDateTime, endDateTime);
-		//		} else {
-		//			tasks = repo.findByDateBetween(startDateTime, endDateTime, userDetails.getUsername());
-		//		}
+		if ("user".equals(userDetails.getUser().getRoleName())) {
+			tasks = repo.findByDateBetween(startDateTime, endDateTime);
+		} else {
+			tasks = repo.findByDateBetween(startDateTime, endDateTime, userDetails.getUsername());
+		}
 
 		// タスクを日付ごとにマップに変換
 		LinkedMultiValueMap<LocalDate, Tasks> tasksMap = new LinkedMultiValueMap<>();
