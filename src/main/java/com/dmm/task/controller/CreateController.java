@@ -30,25 +30,27 @@ public class CreateController {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate parsedDate = LocalDate.parse(date, formatter);
 		LocalDateTime dateTime = parsedDate.atTime(0, 0);
+
 		model.addAttribute("date", dateTime);
 		model.addAttribute("taskForm", new TaskForm());
+
 		return "create";
 	}
 
 	@PostMapping("/main/create")
-	public String post(@Validated TaskForm taskForm, 
+	public String post(@Validated TaskForm taskForm,
 			@AuthenticationPrincipal AccountUserDetails user, Model model) {
 		List<Tasks> list = repo.findAll(Sort.by(Sort.Direction.DESC, "id"));
 		model.addAttribute("tasks", list);
 		model.addAttribute("taskForm", taskForm);
 
+		LocalDate date = taskForm.getDate();
+		LocalDateTime dateTime = date.atTime(0, 0);
+
 		Tasks task = new Tasks();
 		task.setTitle(taskForm.getTitle());
 		task.setText(taskForm.getText());
 		task.setName(user.getName());
-
-		LocalDate date = taskForm.getDate();
-		LocalDateTime dateTime = date.atTime(0, 0);
 		task.setDate(dateTime);
 
 		repo.save(task);
