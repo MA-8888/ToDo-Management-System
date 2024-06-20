@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.dmm.task.entity.Users;
 import com.dmm.task.service.AccountUserDetails;
 import com.dmm.task.service.TaskService;
 
@@ -61,19 +62,19 @@ public class MainController {
 		model.addAttribute("month", currentDate.getYear() + " - " + currentDate.getMonthValue());
 		model.addAttribute("prev", currentDate.minusMonths(1));
 		model.addAttribute("next", currentDate.plusMonths(1));
-		model.addAttribute("tasks", service.getTasksForCalendar(currentDate, user));
+
+		// ログインユーザの権限情報を取得
+		Users currentUser = user.getUser();
+		String roleName = "ROLE_" + currentUser.getRoleName();
+
+		if (roleName.equals("ROLE_user")) {
+			// userの場合の処理
+			model.addAttribute("tasks", service.getLimitedTasksForCalendar(currentDate, currentUser.getUserName()));
+		} else {
+			// adminの場合の処理
+			model.addAttribute("tasks", service.getTasksForCalendar(currentDate));
+		}
+
 		return "main";
 	}
 }
-
-//// ログインユーザの権限情報を取得
-//Users currentUser = userDetails.getUser();
-//String roleName = "ROLE_" + currentUser.getRoleName();
-//
-//if (roleName.equals("ROLE_user")) {
-//	// userの場合の処理
-//	model.addAttribute("tasks", service.getLimitedTasks(currentUser.getUserName()));
-//} else {
-//	// adminの場合の処理
-//	model.addAttribute("tasks", service.getTasksForCalendar(currentDate));
-//}

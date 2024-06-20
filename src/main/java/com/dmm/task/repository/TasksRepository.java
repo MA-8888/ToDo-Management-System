@@ -14,7 +14,7 @@ import com.dmm.task.entity.Tasks;
 public interface TasksRepository extends JpaRepository<Tasks, Integer> {
 	List<Tasks> findByDateBetween(LocalDateTime start, LocalDateTime end);
 
-@Query("select a from Tasks a where a.date between :from and :to and name = :name")
-List<Tasks> findByDateBetween(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to,
-		@Param("name") String name);
+	@Query("select a from Tasks a where a.date between :from and :to and name = :name")
+	List<Tasks> findByDateBetween(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to,
+			@Param("name") String name);
 }

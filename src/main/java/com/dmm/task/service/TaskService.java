@@ -20,7 +20,7 @@ public class TaskService {
 	@Autowired
 	private TasksRepository repo;
 
-	public Map<LocalDate, List<Tasks>> getTasksForCalendar(LocalDate date, AccountUserDetails userDetails) {
+	private Map<LocalDate, List<Tasks>> getTasksForCalendar(LocalDate date, String user) {
 		// 月初と月末を計算
 		YearMonth currentYearMonth = YearMonth.from(date);
 		LocalDate startOfMonth = currentYearMonth.atDay(1);
@@ -30,10 +30,10 @@ public class TaskService {
 		LocalDateTime endDateTime = endOfMonth.plusDays(1).atStartOfDay();
 
 		List<Tasks> tasks;
-		if ("user".equals(userDetails.getUser().getRoleName())) {
+		if (user == null) {
 			tasks = repo.findByDateBetween(startDateTime, endDateTime);
 		} else {
-			tasks = repo.findByDateBetween(startDateTime, endDateTime, userDetails.getUsername());
+			tasks = repo.findByDateBetween(startDateTime, endDateTime, user);
 		}
 
 		// タスクを日付ごとにマップに変換
@@ -41,6 +41,14 @@ public class TaskService {
 		tasks.forEach(task -> tasksMap.add(task.getDate().toLocalDate(), task));
 
 		return tasksMap;
+	}
+
+	public Map<LocalDate, List<Tasks>> getTasksForCalendar(LocalDate date) {
+		return getTasksForCalendar(date, null);
+	}
+
+	public Map<LocalDate, List<Tasks>> getLimitedTasksForCalendar(LocalDate date, String user) {
+		return getTasksForCalendar(date, user);
 	}
 
 	public Tasks createTask(TaskForm form) {
@@ -54,33 +62,3 @@ public class TaskService {
 		return repo.save(task);
 	}
 }
-
-//@Service
-//public class TaskService {
-//
-//	@Autowired
-//	private TasksRepository repo;
-//	public Map<LocalDate, List<Tasks>> getTasksForCalendar(LocalDate date) {
-//
-//		// 月初と月末を計算
-//		LocalDateTime start = date.atStartOfDay();
-//		LocalDateTime end = date.atTime(0,0);
-//
-//		List<Tasks> tasks = repo.findByDateBetween(start, end);
-//
-//		// タスクを日付ごとにマップに変換
-//		return tasks.stream()
-//				.collect(Collectors.groupingBy(task -> task.getDate().toLocalDate()));
-//	}
-//
-//	public Tasks createTask(TaskForm form) {
-//		Tasks task = new Tasks();
-//		task.setTitle(form.getTitle());
-//		task.setName(form.getName());
-//		task.setText(form.getText());
-//		task.setDone(form.isDone());
-//		LocalDateTime dateTime = form.getDate().atStartOfDay();
-//		task.setDate(dateTime);
-//		return repo.save(task);
-//	}
-//}
