@@ -55,6 +55,3 @@ public class CreateController {
 		return "redirect:/main";
 	}
 }
-
-//List<Tasks> list = repo.findAll(Sort.by(Sort.Direction.DESC, "id"));
-//model.addAttribute("tasks", list);
