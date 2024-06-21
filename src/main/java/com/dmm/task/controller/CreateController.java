@@ -3,10 +3,8 @@ package com.dmm.task.controller;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,8 +38,7 @@ public class CreateController {
 	@PostMapping("/main/create")
 	public String post(@Validated TaskForm taskForm,
 			@AuthenticationPrincipal AccountUserDetails user, Model model) {
-		List<Tasks> list = repo.findAll(Sort.by(Sort.Direction.DESC, "id"));
-		model.addAttribute("tasks", list);
+
 		model.addAttribute("taskForm", taskForm);
 
 		LocalDate date = taskForm.getDate();
@@ -58,3 +55,6 @@ public class CreateController {
 		return "redirect:/main";
 	}
 }
+
+//List<Tasks> list = repo.findAll(Sort.by(Sort.Direction.DESC, "id"));
+//model.addAttribute("tasks", list);

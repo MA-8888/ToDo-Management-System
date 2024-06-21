@@ -37,21 +37,16 @@ public class TaskService {
 
 		if (roleName.equals("ROLE_USER")) {
 			// userの場合の処
-			tasks = repo.findByDateBetween(startDateTime, endDateTime, currentUser.getUserName());
+			tasks = repo.findByDateBetween(startDateTime, endDateTime, currentUser.getName());
 		} else {
 			// adminの場合の処理
 			tasks = repo.findByDateBetween(startDateTime, endDateTime);
 		}
 		
-		System.out.println("### Tasks for " + roleName + ": " + tasks);
 
 		// タスクを日付ごとにマップに変換
 		LinkedMultiValueMap<LocalDate, Tasks> tasksMap = new LinkedMultiValueMap<>();
 		tasks.forEach(task -> tasksMap.add(task.getDate().toLocalDate(), task));
-		tasks.forEach(task -> {
-			System.out.println("### Task: " + task); // 追加: 各タスクのデバッグ出力
-			tasksMap.add(task.getDate().toLocalDate(), task);
-		});
 
 
 		return tasksMap;
@@ -68,7 +63,6 @@ public class TaskService {
 		return repo.save(task);
 	}
 }
-
 //List<Tasks> tasks;
 //if (user == null) {
 //	tasks = repo.findByDateBetween(startDateTime, endDateTime);
