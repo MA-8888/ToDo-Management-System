@@ -33,6 +33,7 @@ public class AccountUserDetails implements UserDetails { // UserDetailsを実装
 		return user.getUserName();
 	}
 
+
 	// アカウントの有効期限の状態を判定する
 	@Override
 	public boolean isAccountNonExpired() {
@@ -60,6 +61,9 @@ public class AccountUserDetails implements UserDetails { // UserDetailsを実装
 	// Entityを返す
 	public Users getUser() {
 		return user;
+	}
+	public void setUser(Users user) {
+		this.user = user;
 	}
 
 	// 名前を返す

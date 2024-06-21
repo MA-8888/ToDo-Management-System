@@ -29,34 +29,33 @@ public class TaskService {
 
 		LocalDateTime startDateTime = startOfMonth.atStartOfDay();
 		LocalDateTime endDateTime = endOfMonth.plusDays(1).atStartOfDay();
-		
+
 		// ログインユーザの権限情報を取得
 		List<Tasks> tasks;
 		Users currentUser = user.getUser();
 		String roleName = "ROLE_" + currentUser.getRoleName();
 
-		if (roleName.equals("ROLE_user")) {
-			// userの場合の処理
+		if (roleName.equals("ROLE_USER")) {
+			// userの場合の処
 			tasks = repo.findByDateBetween(startDateTime, endDateTime, currentUser.getUserName());
 		} else {
 			// adminの場合の処理
 			tasks = repo.findByDateBetween(startDateTime, endDateTime);
 		}
+		
+		System.out.println("### Tasks for " + roleName + ": " + tasks);
 
 		// タスクを日付ごとにマップに変換
 		LinkedMultiValueMap<LocalDate, Tasks> tasksMap = new LinkedMultiValueMap<>();
 		tasks.forEach(task -> tasksMap.add(task.getDate().toLocalDate(), task));
+		tasks.forEach(task -> {
+			System.out.println("### Task: " + task); // 追加: 各タスクのデバッグ出力
+			tasksMap.add(task.getDate().toLocalDate(), task);
+		});
+
 
 		return tasksMap;
 	}
-
-//	public Map<LocalDate, List<Tasks>> getTasksForCalendar(LocalDate date) {
-//		return getTasksForCalendar(date, null);
-//	}
-//
-//	public Map<LocalDate, List<Tasks>> getLimitedTasksForCalendar(LocalDate date, String user) {
-//		return getTasksForCalendar(date, user);
-//	}
 
 	public Tasks createTask(TaskForm form) {
 		Tasks task = new Tasks();
