@@ -15,6 +15,10 @@ public class AccountUserDetails implements UserDetails { // UserDetailsを実装
 		this.user = user;
 	}
 
+	public String getUserName() {
+		return user.getUserName();
+	}
+
 	// ユーザに与えられている権限リストを返却する
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

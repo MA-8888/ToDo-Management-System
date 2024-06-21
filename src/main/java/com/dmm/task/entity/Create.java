@@ -22,15 +22,13 @@ public class Create {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-//	private String title;
+	private String title;
 
 	@Column(length = 1000)
 	private String text;
 
 	@DateTimeFormat(pattern = "yyyy-mm-dd")
 	private LocalDate date;
-
-//	private boolean done;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")

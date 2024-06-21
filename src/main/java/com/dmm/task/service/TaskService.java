@@ -1,5 +1,6 @@
 package com.dmm.task.service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -24,30 +25,41 @@ public class TaskService {
 	public Map<LocalDate, List<Tasks>> getTasksForCalendar(LocalDate date, AccountUserDetails user) {
 		// 月初と月末を計算
 		YearMonth currentYearMonth = YearMonth.from(date);
-		LocalDate startOfMonth = currentYearMonth.atDay(1);
-		LocalDate endOfMonth = currentYearMonth.atEndOfMonth();
+		LocalDate firstOfMonth = currentYearMonth.atDay(1);
+		LocalDate lastOfMonth = currentYearMonth.atEndOfMonth();
 
-		LocalDateTime startDateTime = startOfMonth.atStartOfDay();
-		LocalDateTime endDateTime = endOfMonth.plusDays(1).atStartOfDay();
+		// 先月分の日付を含むように調整
+		LocalDate adjustedStartDate = firstOfMonth.with(DayOfWeek.SUNDAY);
+		if (adjustedStartDate.isAfter(firstOfMonth)) {
+			adjustedStartDate = adjustedStartDate.minusWeeks(1);
+		}
+
+		// 来月分の日付を含むように調整
+		LocalDate adjustedEndDate = lastOfMonth.with(DayOfWeek.SATURDAY);
+		if (adjustedEndDate.isBefore(lastOfMonth)) {
+			adjustedEndDate = adjustedEndDate.plusWeeks(1);
+		}
+
+		LocalDateTime startDate = adjustedStartDate.atStartOfDay();
+		LocalDateTime endDate = adjustedEndDate.plusDays(1).atStartOfDay();
 
 		// ログインユーザの権限情報を取得
+
 		List<Tasks> tasks;
 		Users currentUser = user.getUser();
 		String roleName = "ROLE_" + currentUser.getRoleName();
 
 		if (roleName.equals("ROLE_USER")) {
 			// userの場合の処
-			tasks = repo.findByDateBetween(startDateTime, endDateTime, currentUser.getName());
+			tasks = repo.findByDateBetween(startDate, endDate, currentUser.getName());
 		} else {
 			// adminの場合の処理
-			tasks = repo.findByDateBetween(startDateTime, endDateTime);
+			tasks = repo.findByDateBetween(startDate, endDate);
 		}
-		
 
 		// タスクを日付ごとにマップに変換
 		LinkedMultiValueMap<LocalDate, Tasks> tasksMap = new LinkedMultiValueMap<>();
 		tasks.forEach(task -> tasksMap.add(task.getDate().toLocalDate(), task));
-
 
 		return tasksMap;
 	}
