@@ -12,12 +12,12 @@ import lombok.Data;
 @Data
 @Entity
 public class Tasks {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private String title;
-    private String text;
-    private String name;
-    private LocalDateTime date;
-    private boolean done;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+	private String title;
+	private String text;
+	private String name;
+	private LocalDateTime date;
+	private boolean done;
 }

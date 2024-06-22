@@ -58,7 +58,7 @@ public class MainController {
 
 		// カレンダーとタスクデータをモデルに追加
 		model.addAttribute("matrix", month);
-		model.addAttribute("month", currentDate.getYear() + " - " + currentDate.getMonthValue());
+		model.addAttribute("month", currentDate.getYear() + "年" + " - " + currentDate.getMonthValue() + "月");
 		model.addAttribute("prev", currentDate.minusMonths(1));
 		model.addAttribute("next", currentDate.plusMonths(1));
 		model.addAttribute("tasks", service.getTasksForCalendar(currentDate, user));
